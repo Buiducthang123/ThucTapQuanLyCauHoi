@@ -14,9 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 //
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -27,6 +24,13 @@ Route::get('/', function () {
 //     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
+
+Route::get('/',[\App\Http\Controllers\User\HomeController::class,'index'])->middleware('auth');
+
+Route::prefix('/')->middleware(['auth'])->group(function (){
+    Route::get('/test/{id}',[\App\Http\Controllers\User\TestController::class,'index'])->name('test.user.show');
+    Route::get('/',[\App\Http\Controllers\User\HomeController::class,'index']);
+});
 
 Route::prefix('admin')->middleware(['roleMiddleware'])->group(function (){
     Route::get('/',[\App\Http\Controllers\Admin\AdminController::class,'index'])->name('question.index');
@@ -51,13 +55,14 @@ Route::prefix('admin')->middleware(['roleMiddleware'])->group(function (){
         Route::delete('/delete/question/{id}',[\App\Http\Controllers\Admin\TestController::class,'deleteQuestion'])->name('test.deleteQuestion');
         Route::put('/quickAdd/{id}',[\App\Http\Controllers\Admin\TestController::class,'quick_add_questions'])->name('test.quickAdd');
         Route::get('/search',[\App\Http\Controllers\Admin\TestController::class,'search'])->name('test.search');
-
+        Route::post('/custom_sort',[\App\Http\Controllers\Admin\TestController::class,'custom_sort'])->name('test.custom_sort');
     });
 });
 Route::post('/custom-logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('custom-logout');
 
 
-Route::get('/hihi', function () {
+
+Route::post('/hihi', function () {
     // Xử lý logic ở đây
     return response()->json(['message' => 'Success']);
 })->name('test.hi');

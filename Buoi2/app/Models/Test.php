@@ -11,6 +11,6 @@ class Test extends Model
 
     protected $fillable = ['name'];
     function questions(){
-        return $this->belongsToMany(Question::class,'test_questions','test_id','question_id')->withTimestamps();
+        return $this->belongsToMany(Question::class,'test_questions','test_id','question_id')->withPivot('index')->withTimestamps();
     }
 }

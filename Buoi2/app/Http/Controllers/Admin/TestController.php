@@ -81,5 +81,13 @@ class TestController extends Controller
         return view('Admin.Test.test_management', compact('tests'));
     }
 
+    function custom_sort(Request $request)
+    {
+        $test_id = $request->test_id; // Corrected variable name
+        $data = json_decode($request->data);
+        $a =$this->testService->custom_sort($test_id,$data);
+        return $a;
+    }
+
 
 }

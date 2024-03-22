@@ -22,10 +22,11 @@ class TestQuestionSeeder extends Seeder
         $questions_id =  Question::pluck('id');
         $tests_id = Test::pluck('id');
 
-        for ($i=0; $i <5 ; $i++) {
-            TestQuestion::create([
-                'test_id'=>$faker->randomElement($tests_id),
-                'question_id'=>$faker->randomElement($questions_id),
+        for ($i=0; $i <10 ; $i++) {
+             TestQuestion::create([
+                'test_id' => 1,
+                'question_id' => $faker->randomElement($questions_id),
+                'index'=>$i,
             ]);
         }
     }

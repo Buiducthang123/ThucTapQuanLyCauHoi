@@ -106,5 +106,11 @@ class TestService{
         return $result;
     }
 
+    function custom_sort($test_id,$data =[])
+    {
+
+        $a = $this->testRepo->custom_sort($test_id,$data);
+        return $a;
+    }
 
 }
