@@ -27,6 +27,15 @@ abstract class BaseRepository implements RepositoryInterface{
         return $this->model->latest()->get();
     }
 
+    public function findOrFail( $attributes =[])
+    {
+        $result = $this->model->firstOrCreate($attributes);
+        if($result){
+            return false;
+        }
+        return true;
+    }
+
     function create($data = []){
         $result = $this->model->create($data);
         if($result){
@@ -68,5 +77,6 @@ abstract class BaseRepository implements RepositoryInterface{
         $result = $this->model->where($column,'like','%'.$value.'%')->paginate(8);
         return $result;
     }
+
 
 }

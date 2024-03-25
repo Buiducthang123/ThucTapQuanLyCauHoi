@@ -30,7 +30,6 @@ class TestRepository extends BaseRepository implements TestRepositoryInterface
     {
         $test = $this->model->find($id);
         if ($test) {
-            echo("ahahah");;
             return $test->questions()->latest()->get();
         }
         return false;
@@ -46,7 +45,6 @@ class TestRepository extends BaseRepository implements TestRepositoryInterface
                 foreach ($data as $value) {
                     $updates[$value->question_id] = $value->index;
                 }
-                // $test->questions()->sync($updates);
                 foreach ($updates as $key => $value) {
                     $test->questions()->updateExistingPivot($key,['index'=>$value]);
                 }
@@ -56,8 +54,14 @@ class TestRepository extends BaseRepository implements TestRepositoryInterface
             }
         }
         return false;
-
     }
 
-
+//    function get_random_questions($test_id)
+//    {
+//        $test = $this->model->find($test_id);
+//        if ($test) {
+//            return $test->questions()->inRandomOrder()->limit(40)->get();
+//        }
+//        return false;
+//    }
 }

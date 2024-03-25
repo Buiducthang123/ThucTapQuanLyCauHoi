@@ -1,5 +1,6 @@
 @extends('Layouts.app')
 @section('style')
+
     <link rel="stylesheet" href="{{asset('CSS/home.css')}}">
 @endsection
 @section('content')
@@ -22,7 +23,8 @@
                         <div class="card-body">
                             <h5 class="card-title text-xl">{{$test->name}}</h5>
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a class="btn btn-primary" href="{{route('test.user.show',['id'=>$test->id])}}">Bắt đầu làm bài</a>
+                            <button id="btn-create_result" onclick="create_result({{$test->id}})" class="btn btn-primary" href="">Bắt đầu làm bài {{$test->id}}</button>
+
                         </div>
                     </div>
                 @endforeach
@@ -32,4 +34,34 @@
         <!-- container -->
     </section>
     <!--====== PRICING STYLE ONE ENDS ======-->
+@endsection
+@section('import_js')
+
+    <script src="{{asset("JS/AJAX/index.js")}}"></script>
+    <script>
+
+        // $(document).ready(function() {
+        //     $('#btn-create_result').click(function() {
+        //         console.log('uuhu');
+        //         create_result(id);
+        //     })
+        // });
+
+
+
+        function create_result(id){
+            let test_id= <?php echo json_encode(($test->id))?>;
+            data = {
+                'test_id':id,
+            }
+            console.log('diewfb');
+            PostAjax('/result',data);
+
+            window.location = "/test/"+id;
+        }
+    </script>
+{{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>--}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js"></script>
+
+
 @endsection

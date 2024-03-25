@@ -30,6 +30,11 @@ Route::get('/',[\App\Http\Controllers\User\HomeController::class,'index'])->midd
 Route::prefix('/')->middleware(['auth'])->group(function (){
     Route::get('/test/{id}',[\App\Http\Controllers\User\TestController::class,'index'])->name('test.user.show');
     Route::get('/',[\App\Http\Controllers\User\HomeController::class,'index']);
+
+    //Route Result
+    Route::post('result',[\App\Http\Controllers\Admin\ResultController::class,'create'])->name('result.create');
+    //Kiem tra dap an dung
+    Route::post('/result/checkCorrectOption',[\App\Http\Controllers\User\TestController::class,'checkCorrectOption']);
 });
 
 Route::prefix('admin')->middleware(['roleMiddleware'])->group(function (){
@@ -58,6 +63,8 @@ Route::prefix('admin')->middleware(['roleMiddleware'])->group(function (){
         Route::post('/custom_sort',[\App\Http\Controllers\Admin\TestController::class,'custom_sort'])->name('test.custom_sort');
     });
 });
+
+
 Route::post('/custom-logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('custom-logout');
 
 

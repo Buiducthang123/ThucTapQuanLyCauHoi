@@ -233,39 +233,5 @@
             });
         }
     </script>
-    {{--        <script type="text/javascript"> --}}
-    {{--            $(document).ready(function () { --}}
-    {{--                $('#form_add_question').submit(function (event) { --}}
-    {{--                    // Ngăn chặn hành vi mặc định của form (tải lại trang) --}}
-    {{--                    event.preventDefault(); --}}
-
-    {{--                    // Lấy dữ liệu từ form --}}
-    {{--                    var formData = $(this).serialize(); --}}
-    {{--                    let a = $('#exampleModalLong') --}}
-    {{--                    let b = $('.modal-backdrop').eq(0); --}}
-
-
-    {{--                    // Gửi yêu cầu AJAX --}}
-    {{--                    $.ajax({ --}}
-    {{--                        url: '{{route('test.handleAdd')}}', --}}
-    {{--                        type: 'POST', --}}
-    {{--                        data: formData, --}}
-    {{--                        success: function (response) { --}}
-    {{--                            // console.log(response); --}}
-
-    {{--                            a.removeClass('show'); --}}
-    {{--                            a.css('display','none'); --}}
-    {{--                            a.attr('aria-hidden', 'true'); --}}
-    {{--                            b.hide(); --}}
-    {{--                        }, --}}
-    {{--                        error: function (xhr, status, error) { --}}
-    {{--                            // Xử lý lỗi (nếu có) --}}
-    {{--                            console.log(error); --}}
-    {{--                        } --}}
-    {{--                    }); --}}
-    {{--                }); --}}
-    {{--            }); --}}
-
-    {{--        </script> --}}
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 @endsection
