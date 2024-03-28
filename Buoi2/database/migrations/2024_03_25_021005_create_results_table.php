@@ -21,6 +21,7 @@ return new class extends Migration
             $table->dateTime('time_end');
             $table->float('score')->nullable();
             $table->boolean('status')->default(false);
+            $table->json('answers')->nullable();
             $table->timestamps();
         });
     }

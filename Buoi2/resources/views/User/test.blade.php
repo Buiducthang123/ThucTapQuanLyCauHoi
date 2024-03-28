@@ -24,8 +24,9 @@
                     </h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" style="text-align: center;background-color: #f27171;color: #e5e7eb; min-height: 145px" >
-                    <div class="spinner-border text-primary" role="status" id="loading" >
+                <div class="modal-body"
+                     style="text-align: center;background-color: #f27171;color: #e5e7eb; min-height: 145px">
+                    <div class="spinner-border text-primary" role="status" id="loading">
                         <span class="visually-hidden">Loading...</span>
                     </div>
                     <span style="display: block;font-size: 32px; font-weight: bold;margin-bottom: 5px;" id="score">
@@ -40,8 +41,10 @@
 
                 </div>
                 <div class="modal-footer">
-{{--                    <button type="button" class="btn btn-secondary" style="background-color:#5C636A;" data-bs-dismiss="modal">Closee</button>--}}
-                    <button type="button" class="btn btn-primary" onclick="redirectToHomePage()" style="background-color:#0d6efd;">Quay trở lại trang chủ</button>
+                    {{--                    <button type="button" class="btn btn-secondary" style="background-color:#5C636A;" data-bs-dismiss="modal">Closee</button>--}}
+                    <button type="button" class="btn btn-primary" onclick="redirectToHomePage()"
+                            style="background-color:#0d6efd;">Quay trở lại trang chủ
+                    </button>
                 </div>
             </div>
         </div>
@@ -100,30 +103,33 @@
     </div>
 @endsection
 @section('import_js')
-    <script>
-        var isEndTime = false;
-
-        function countdown(time = '') {
-            const targetTime = new Date(time).getTime();
-            const spanCountDown = document.getElementById("countdown");
-            const countdownInterval = setInterval(() => {
-                const currentTime = new Date().getTime();
-                const timeRemaining = Math.max(targetTime - currentTime, 0);
-                // const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
-                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-                spanCountDown.innerText = `Còn lại: ${minutes} phút ${seconds} giây`
-                if (timeRemaining === 0) {
-                    spanCountDown.innerText = "Hết giờ"
-                    isEndTime = true
-                    clearInterval(countdownInterval);
-                }
-            }, 1000);
-        }
-
-        countdown("{{$result->time_end}}");
-    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/4.0.0-beta/jquery.js"></script>
+    <script>
+        var auto;
+        $(document).ready(function () {
+            function countdown(time = '') {
+                const targetTime = new Date(time).getTime();
+                const spanCountDown = $("#countdown");
+                const countdownInterval = setInterval(() => {
+                    const currentTime = new Date().getTime();
+                    const timeRemaining = Math.max(targetTime - currentTime, 0);
+                    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+                    spanCountDown.text(`Còn lại: ${minutes} phút ${seconds} giây`);
+
+                    if (timeRemaining === 0) {
+                        spanCountDown.text("Hết giờ");
+                        auto = true;
+                        $("#btn-submit").click();
+                        clearInterval(countdownInterval);
+                    }
+                }, 1000);
+            }
+
+            countdown("{{$result->time_end}}");
+        });
+    </script>
+
     <script>
         $(document).ready(function () {
             if ({{$result->status}} == 1) {
@@ -136,56 +142,85 @@
             $('#form-questions').submit(function (event) {
                 // Ngăn chặn hành vi mặc định của form (tải lại trang)
                 event.preventDefault();
-                $a = confirm('Bạn có chắc muốn nộp bài không?')
-                if ($a) {
-                    event.preventDefault();
-                    console.log('chdhhd');
-                    // Lấy dữ liệu từ form
-                    var formData = $(this).serialize();
-                    var formDataArray = formData.split('&').map(function (item) {
-                        var pair = item.split('=');
-                        return {
-                            name: decodeURIComponent(pair[0]),
-                            value: decodeURIComponent(pair[1] || '')
-                        };
-                    });
-                    var submit = true
-                    $.each(formDataArray, function (index, field) {
-                        if (!field.value) {
-                            submit = false
-                            return 0
-                        }
-                    });
-                    if (!submit) {
-                        $b = confirm("Chua dien het dap an" +
-                            "Ban co muon nop bai k")
-                        if ($b) {
-                            $('#staticBackdrop').modal('show');
-                            console.log(formData)
-                            // Gửi yêu cầu AJAX
-                            $.ajax({
-                                url: '/result/count_score',
-                                type: 'POST',
-                                async: true,
-                                data: formData,
-                                success: function (response) {
-                                    console.log(response);
-                                    $('#btn-submit').prop('disabled', true);
-                                    $('#score').text(response.score+"/10");
-                                    $('#number_question').text("Tổng số câu hỏi: "+response.questions);
-                                    $('#correct_question').text("Số câu trả lời đúng: "+response.correct_question);
-                                    $('#loading').css('display', 'none');
-                                },
-                                error: function (xhr, status, error) {
-                                    // Xử lý lỗi (nếu có)
-                                    console.log(xhr);
-                                    console.log(error);
-                                    console.log(status);
-                                }
-                            });
+                var formData = $(this).serialize();
+                var formDataArray = formData.split('&').map(function (item) {
+                    var pair = item.split('=');
+                    return {
+                        name: decodeURIComponent(pair[0]),
+                        value: decodeURIComponent(pair[1] || '')
+                    };
+                });
+                if (!auto) {
+                    $a = confirm('Bạn có chắc muốn nộp bài không?')
+                    if ($a) {
+                        event.preventDefault();
+                        console.log('chdhhd');
+                        // Lấy dữ liệu từ form
+
+                        var submit = true
+                        $.each(formDataArray, function (index, field) {
+                            if (!field.value) {
+                                submit = false
+                                return 0
+                            }
+                        });
+                        if (!submit) {
+                            $b = confirm("Chua dien het dap an" +
+                                "Ban co muon nop bai k")
+                            if ($b) {
+                                $('#staticBackdrop').modal('show');
+                                console.log(formData)
+                                // Gửi yêu cầu AJAX
+                                $.ajax({
+                                    url: '/result/count_score',
+                                    type: 'POST',
+                                    async: true,
+                                    data: formData,
+                                    success: function (response) {
+                                        console.log(response);
+                                        $('#btn-submit').prop('disabled', true);
+                                        $('#score').text(response.score + "/10");
+                                        $('#number_question').text("Tổng số câu hỏi: " + response.questions);
+                                        $('#correct_question').text("Số câu trả lời đúng: " + response.correct_question);
+                                        $('#loading').css('display', 'none');
+                                    },
+                                    error: function (xhr, status, error) {
+                                        // Xử lý lỗi (nếu có)
+                                        console.log(xhr);
+                                        console.log(error);
+                                        console.log(status);
+                                    }
+                                });
+                            }
                         }
                     }
+                } else {
+
+                    $('#staticBackdrop').modal('show');
+                    console.log(formData)
+                    // Gửi yêu cầu AJAX
+                    $.ajax({
+                        url: '/result/count_score',
+                        type: 'POST',
+                        async: true,
+                        data: formData,
+                        success: function (response) {
+                            console.log(response);
+                            $('#btn-submit').prop('disabled', true);
+                            $('#score').text(response.score + "/10");
+                            $('#number_question').text("Tổng số câu hỏi: " + response.questions);
+                            $('#correct_question').text("Số câu trả lời đúng: " + response.correct_question);
+                            $('#loading').css('display', 'none');
+                        },
+                        error: function (xhr, status, error) {
+                            // Xử lý lỗi (nếu có)
+                            console.log(xhr);
+                            console.log(error);
+                            console.log(status);
+                        }
+                    });
                 }
+
             })
         });
     </script>
