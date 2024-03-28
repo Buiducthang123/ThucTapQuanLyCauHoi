@@ -61,6 +61,6 @@ class User extends Authenticatable
 
     function tests()
     {
-        return $this->belongsToMany(Test::class,'results')->withPivot(['id','test_id','user_id','time_start','time_end','scores','status']);
+        return $this->belongsToMany(Test::class,'results')->withPivot(['id','test_id','user_id','time_start','time_end','score','status']);
     }
 }

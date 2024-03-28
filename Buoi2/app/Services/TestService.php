@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Question\QuestionRepository;
+use App\Repositories\Result\ResultRepository;
 use App\Repositories\Test\TestRepository;
 use GuzzleHttp\Psr7\Request;
 use Faker\Factory as Facker;
@@ -11,16 +12,18 @@ class TestService
 {
     protected $testRepo;
     protected $questionRepo;
+    protected $resultRepo;
 
     // protected $questionRepo;
 
     /**
      * Class constructor.
      */
-    public function __construct(TestRepository $testRepository, QuestionRepository $questionRepository)
+    public function __construct(TestRepository $testRepository, QuestionRepository $questionRepository, ResultRepository $resultRepository)
     {
         $this->testRepo = $testRepository;
         $this->questionRepo = $questionRepository;
+        $this->resultRepo=$resultRepository;
     }
 
     function getAllQuestionInTest($id)
@@ -58,7 +61,21 @@ class TestService
     function addQuestion($test_id, $questions_id)
     {
         $test = $this->testRepo->findById($test_id);
-        $test->questions()->attach($questions_id, ['created_at' => now(), 'updated_at' => now()]);
+        $questionCount = $test->questions()->count();
+        $index = $questionCount - 1;
+        if($index<=0){
+            $index=0;
+        }
+
+        foreach ($questions_id as $question_id) {
+            $test->questions()->attach($question_id, [
+                'index' => $index,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+            $index++;
+        }
+
     }
 
     function create($data = [])
@@ -125,16 +142,16 @@ class TestService
         return $result;
     }
 
-    function custom_sort($test_id, $data = [])
-    {
-
-        $a = $this->testRepo->custom_sort($test_id, $data);
-        return $a;
-    }
-
     function get_questions($test_id)
     {
         return $this->testRepo->getQuestion($test_id);
+    }
+
+    function count_score($data = [], $test_id,$result_id)
+    {
+        $result = $this->testRepo->count_score($data, $test_id);
+
+        return $this->resultRepo->update($result,$result_id);
     }
 
 

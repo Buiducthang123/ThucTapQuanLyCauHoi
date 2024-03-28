@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('test_id')->references('id')->on('tests');
             $table->dateTime('time_start');
             $table->dateTime('time_end');
-            $table->float('scores')->nullable();
+            $table->float('score')->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();
         });

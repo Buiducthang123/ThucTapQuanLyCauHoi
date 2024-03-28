@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\QuestionService;
+use App\Services\TestQuestionService;
 use App\Services\TestService;
 use Illuminate\Http\Request;
 
@@ -11,13 +12,15 @@ class TestController extends Controller
 {
     protected $testService;
     protected $questionService;
+    protected $testquestionsService;
     /**
      * Class constructor.
      */
-    public function __construct(TestService $testService, QuestionService $questionService)
+    public function __construct(TestService $testService, QuestionService $questionService, TestQuestionService $testquestionsService)
     {
         $this->testService = $testService;
         $this->questionService = $questionService;
+        $this->testquestionsService = $testquestionsService;
     }
     function index()
     {
@@ -83,10 +86,13 @@ class TestController extends Controller
 
     function custom_sort(Request $request)
     {
-        $test_id = $request->test_id; // Corrected variable name
         $data = json_decode($request->data);
-        $a =$this->testService->custom_sort($test_id,$data);
-        return $a;
+        $index_start = $data->indexStart;
+        $index_end = $data->index_end;
+        $test_id = $data->test_id;
+        $question_id= $data->question_id;
+        $result = $this->testquestionsService->custom_sort($index_start,$index_end,$question_id,$test_id);
+        return $result;
     }
 
 

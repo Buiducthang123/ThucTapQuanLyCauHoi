@@ -25,5 +25,9 @@ class ResultService
         }
     }
 
+    function update($data,$id)
+    {
+        return $this->resultRepo->update($data,$id);
+    }
 
 }

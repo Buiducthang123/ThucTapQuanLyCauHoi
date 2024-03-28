@@ -34,34 +34,31 @@ class TestRepository extends BaseRepository implements TestRepositoryInterface
         }
         return false;
     }
-
-    function custom_sort($test_id,$data=[])
+    function count_score($data = [],$test_id)
     {
+        $count_correct = 0;
         $test = $this->model->find($test_id);
-
+        $count_question =0;
         if ($test) {
-            try {
-                $updates = [];
-                foreach ($data as $value) {
-                    $updates[$value->question_id] = $value->index;
+            $count_question=$test->questions()->count();
+            foreach ($data as $key => $value) {
+                $question = $test->questions()->where('questions.id',$key)
+                    ->where('CorrectOption', $value)
+                    ->get();
+                if (!$question->isEmpty()) {
+                    $count_correct++;
                 }
-                foreach ($updates as $key => $value) {
-                    $test->questions()->updateExistingPivot($key,['index'=>$value]);
-                }
-                return $updates;
-            } catch (Exception $e) {
-                return false;
             }
         }
-        return false;
-    }
+        $score = 10/$count_question *$count_correct;
+        $score = round($score,2);
 
-//    function get_random_questions($test_id)
-//    {
-//        $test = $this->model->find($test_id);
-//        if ($test) {
-//            return $test->questions()->inRandomOrder()->limit(40)->get();
-//        }
-//        return false;
-//    }
+        $result = [
+            'score'=>$score,
+            'correct_question'=>$count_correct,
+            'questions'=>$count_question,
+            'status'=>true
+        ];
+        return $result;
+    }
 }

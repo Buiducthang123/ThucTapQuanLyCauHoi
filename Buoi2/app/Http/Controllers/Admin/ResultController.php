@@ -29,8 +29,6 @@ class ResultController
             'time_end' => $time_end,
             'status'=>0
         ]);
-
-
         return [$test_id, $user_id,
             $time_start->format('Y-m-d H:i:s'),
             $time_end->format('Y-m-d H:i:s'),

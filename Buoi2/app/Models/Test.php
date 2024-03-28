@@ -16,6 +16,6 @@ class Test extends Model
 
     function users()
     {
-        return $this->belongsToMany(User::class,'results','user_id','test_id')->withPivot([['test_id','user_id','time_start','time_end','scores','status']]);
+        return $this->belongsToMany(User::class,'results','user_id','test_id')->withPivot([['test_id','user_id','time_start','time_end','score','status']]);
     }
 }

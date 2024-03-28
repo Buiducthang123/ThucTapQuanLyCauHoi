@@ -25,16 +25,13 @@ use Illuminate\Support\Facades\Route;
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
 
-Route::get('/',[\App\Http\Controllers\User\HomeController::class,'index'])->middleware('auth');
-
 Route::prefix('/')->middleware(['auth'])->group(function (){
     Route::get('/test/{id}',[\App\Http\Controllers\User\TestController::class,'index'])->name('test.user.show');
     Route::get('/',[\App\Http\Controllers\User\HomeController::class,'index']);
-
-    //Route Result
+    Route::post('/custom-logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('custom-logout');
     Route::post('result',[\App\Http\Controllers\Admin\ResultController::class,'create'])->name('result.create');
-    //Kiem tra dap an dung
-    Route::post('/result/checkCorrectOption',[\App\Http\Controllers\User\TestController::class,'checkCorrectOption']);
+    Route::post('/result/count_score',[\App\Http\Controllers\User\TestController::class,'count_score']);
+    Route::patch('/result/{id}',[\App\Http\Controllers\Admin\ResultController::class,'update'])->name('result.update');
 });
 
 Route::prefix('admin')->middleware(['roleMiddleware'])->group(function (){
@@ -65,7 +62,6 @@ Route::prefix('admin')->middleware(['roleMiddleware'])->group(function (){
 });
 
 
-Route::post('/custom-logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('custom-logout');
 
 
 

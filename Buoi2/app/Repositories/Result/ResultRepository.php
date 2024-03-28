@@ -4,6 +4,7 @@ namespace App\Repositories\Result;
 
 use App\Models\Result;
 use App\Repositories\BaseRepository;
+use Illuminate\Support\Facades\Auth;
 
 class ResultRepository extends BaseRepository implements ResultRepositoryInterface
 {
@@ -28,5 +29,13 @@ class ResultRepository extends BaseRepository implements ResultRepositoryInterfa
     {
         return $data;
     }
+
+    function showResult()
+    {
+        $user = Auth::user();
+        dd($user->tests()->get());
+
+    }
+
 
 }
