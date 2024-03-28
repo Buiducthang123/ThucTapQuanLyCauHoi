@@ -150,8 +150,8 @@ class TestService
     function count_score($data = [], $test_id,$result_id)
     {
         $result = $this->testRepo->count_score($data, $test_id);
-
-        return $this->resultRepo->update($result,$result_id);
+        $this->resultRepo->update($result,$result_id);
+        return $result;
     }
 
 

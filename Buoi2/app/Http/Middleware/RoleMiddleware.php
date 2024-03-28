@@ -19,7 +19,6 @@ class RoleMiddleware
         if (!auth()->user() || auth()->user()->role_id != 2) {
             return redirect('/');
         }
-
         return $next($request);
     }
 

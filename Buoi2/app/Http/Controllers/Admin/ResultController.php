@@ -27,12 +27,21 @@ class ResultController
             'user_id' => $user_id,
             'time_start' => $time_start,
             'time_end' => $time_end,
-            'status'=>0
+            'status'=>0,
+
         ]);
         return [$test_id, $user_id,
             $time_start->format('Y-m-d H:i:s'),
             $time_end->format('Y-m-d H:i:s'),
         ];
 
+    }
+    function showDetail($result_id)
+    {
+        $result = $this->resultService->showDetail($result_id);
+        $questions = $result['questions'];
+        $user_answers = $result['answers_user'];
+        $test = $result['test'];
+        return view('User.show_detail_result',compact(['questions','user_answers','test']));
     }
 }

@@ -154,9 +154,6 @@
                     $a = confirm('Bạn có chắc muốn nộp bài không?')
                     if ($a) {
                         event.preventDefault();
-                        console.log('chdhhd');
-                        // Lấy dữ liệu từ form
-
                         var submit = true
                         $.each(formDataArray, function (index, field) {
                             if (!field.value) {
@@ -164,34 +161,35 @@
                                 return 0
                             }
                         });
-                        if (!submit) {
+                        if (submit==false) {
                             $b = confirm("Chua dien het dap an" +
                                 "Ban co muon nop bai k")
                             if ($b) {
-                                $('#staticBackdrop').modal('show');
-                                console.log(formData)
-                                // Gửi yêu cầu AJAX
-                                $.ajax({
-                                    url: '/result/count_score',
-                                    type: 'POST',
-                                    async: true,
-                                    data: formData,
-                                    success: function (response) {
-                                        console.log(response);
-                                        $('#btn-submit').prop('disabled', true);
-                                        $('#score').text(response.score + "/10");
-                                        $('#number_question').text("Tổng số câu hỏi: " + response.questions);
-                                        $('#correct_question').text("Số câu trả lời đúng: " + response.correct_question);
-                                        $('#loading').css('display', 'none');
-                                    },
-                                    error: function (xhr, status, error) {
-                                        // Xử lý lỗi (nếu có)
-                                        console.log(xhr);
-                                        console.log(error);
-                                        console.log(status);
-                                    }
-                                });
+                                submit =true
                             }
+                        }
+                        if(submit==true) {
+                            $('#staticBackdrop').modal('show');
+                            $.ajax({
+                                url: '/result/count_score',
+                                type: 'POST',
+                                async: true,
+                                data: formData,
+                                success: function (response) {
+                                    console.log(response);
+                                    $('#btn-submit').prop('disabled', true);
+                                    $('#score').text(response.score + "/10");
+                                    $('#number_question').text("Tổng số câu hỏi: " + response.questions);
+                                    $('#correct_question').text("Số câu trả lời đúng: " + response.correct_question);
+                                    $('#loading').css('display', 'none');
+                                },
+                                error: function (xhr, status, error) {
+                                    // Xử lý lỗi (nếu có)
+                                    console.log(xhr);
+                                    console.log(error);
+                                    console.log(status);
+                                }
+                            });
                         }
                     }
                 } else {
@@ -205,7 +203,6 @@
                         async: true,
                         data: formData,
                         success: function (response) {
-                            console.log(response);
                             $('#btn-submit').prop('disabled', true);
                             $('#score').text(response.score + "/10");
                             $('#number_question').text("Tổng số câu hỏi: " + response.questions);

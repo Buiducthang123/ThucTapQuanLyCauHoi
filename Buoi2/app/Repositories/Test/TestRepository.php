@@ -57,7 +57,8 @@ class TestRepository extends BaseRepository implements TestRepositoryInterface
             'score'=>$score,
             'correct_question'=>$count_correct,
             'questions'=>$count_question,
-            'status'=>true
+            'status'=>true,
+            'answers'=>($data),
         ];
         return $result;
     }

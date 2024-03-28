@@ -30,7 +30,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <?php
-                            $results = auth()->user()->tests()->get();
+                        $results = auth()->user()->tests()->get();
                         ?>
                         <div class="modal-body" style="padding: 40px 80px">
                             <!-- Modal content goes here -->
@@ -43,6 +43,7 @@
                                     <th scope="col">Điểm số</th>
                                     <th scope="col">Trạng thái</th>
                                     <th scope="col">Ngày thi</th>
+                                    <th scope="col">Xem lại</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -53,6 +54,15 @@
                                         <td>{{$result->pivot->score}}</td>
                                         <td>{{ ($result->pivot->status==1)?"Hoàn thành":"Chưa hoàn thành" }}</td>
                                         <td>{{$result->created_at->format('d-m-Y H:i:s')}}</td>
+                                        <td><a
+                                                @if($result->pivot->status==1)
+                                                    href="{{route("result.show_detail",['id'=>$result->pivot->id])}}"
+                                                @endif
+                                                @if($result->pivot->status!=1)
+                                                    style="cursor: not-allowed"
+                                                @endif
+
+                                            >Xem chi tiết</a></td>
                                     </tr>
                                 @endforeach
 

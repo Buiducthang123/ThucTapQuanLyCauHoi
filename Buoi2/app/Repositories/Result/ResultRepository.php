@@ -30,12 +30,24 @@ class ResultRepository extends BaseRepository implements ResultRepositoryInterfa
         return $data;
     }
 
-    function showResult()
+    function showDetail($result_id)
     {
-        $user = Auth::user();
-        dd($user->tests()->get());
 
+        $test = Auth::user()->tests()->withPivot('id')->wherePivot('id', $result_id)->first();
+        if (!$test) {
+            return response()->json(['message' => 'Không tìm thấy kết quả bài kiểm tra'], 404);
+        }
+
+        $questions = $test->questions()->get();
+        $answers_user = json_decode($test->pivot->answers, true);
+//        dd($answers_user);
+        return [
+            'questions' => $questions,
+            'answers_user' => $answers_user,
+            'test'=>$test
+        ];
     }
+
 
 
 }

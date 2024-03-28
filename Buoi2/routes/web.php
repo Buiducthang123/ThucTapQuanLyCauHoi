@@ -27,11 +27,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/')->middleware(['auth'])->group(function (){
     Route::get('/test/{id}',[\App\Http\Controllers\User\TestController::class,'index'])->name('test.user.show');
-    Route::get('/',[\App\Http\Controllers\User\HomeController::class,'index']);
+    Route::get('/',[\App\Http\Controllers\User\HomeController::class,'index'])->name('user.index');
     Route::post('/custom-logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('custom-logout');
     Route::post('result',[\App\Http\Controllers\Admin\ResultController::class,'create'])->name('result.create');
     Route::post('/result/count_score',[\App\Http\Controllers\User\TestController::class,'count_score']);
     Route::patch('/result/{id}',[\App\Http\Controllers\Admin\ResultController::class,'update'])->name('result.update');
+    Route::get('/show-detail/{id}',[\App\Http\Controllers\Admin\ResultController::class,'showDetail'])->name('result.show_detail');
 });
 
 Route::prefix('admin')->middleware(['roleMiddleware'])->group(function (){

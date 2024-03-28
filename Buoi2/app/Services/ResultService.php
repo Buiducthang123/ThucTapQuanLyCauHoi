@@ -30,4 +30,9 @@ class ResultService
         return $this->resultRepo->update($data,$id);
     }
 
+    function showDetail($result_id)
+    {
+        return $this->resultRepo->showDetail($result_id);
+    }
+
 }
